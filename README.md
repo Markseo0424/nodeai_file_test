@@ -1,16 +1,51 @@
 # file_test
 
-A new Flutter project.
+using ```file_picker: ^4.5.0```
 
-## Getting Started
+### save file
+return data is path of selected
+```dart
+// get file path
+String? result = await FilePicker.platform.saveFile(
+                type: FileType.custom,
+                allowedExtensions: ['nodeai'],
+              );
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+//write file
+File writeFile = File(path);
+writeFile.writeAsString(encodedData);
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### read files
+```dart
+// getting result
+// can enable multiple files with "allowMultiple = true"
+FilePickerResult? result = await FilePicker.platform.pickFiles(
+                type: FileType.custom,
+                allowedExtensions: ['nodeai'],
+              );
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+//get file name and read file as string
+if(result != null && result.files.isNotEmpty){
+  String fileName = result.files.first.name;
+  
+  if(result.files.first.path != null) {
+      File readFile = File(result.files.first.path!);
+      message = await readFile.readAsString();
+  }
+}
+```
+
+### get Directory path
+can select directory
+return as path string
+```dart
+String? result = await FilePicker.platform.getDirectoryPath();
+
+if(result != null) {
+  print(Directory(result).listsync());
+}
+```
+
